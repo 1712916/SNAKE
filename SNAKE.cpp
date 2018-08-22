@@ -160,7 +160,7 @@ void left(int &x, int y, char ch_main)
 	cout << " ";
 	x = x - 1;
 }
-void move_(char moving, char ch_main, int &x, int &y, int is_snake[100][2], int &n, int n1 = 2)
+bool move_(char moving, char ch_main, int &x, int &y, int is_snake[100][2], int &n, int n1 = 2)
 {
 	int after_x = is_snake[n][0], after_y=is_snake[n][1];
 	/////////
@@ -213,7 +213,14 @@ void move_(char moving, char ch_main, int &x, int &y, int is_snake[100][2], int 
 	gotoxy(is_snake[n][0], is_snake[n][1]);
 	Sleep(1000/4*SPEED);
 	cout << " ";
-	
+	for (int i = 2; i <= n; i++)
+	{
+		if (is_snake[1][0] == is_snake[i][0] && is_snake[1][1] == is_snake[i][1])
+		{
+			return FALSE;
+		}
+	}
+	return TRUE;
 
 }
 void startgame()
@@ -278,9 +285,14 @@ void main()
 			}
 			
 
-			move_(moving, meocon.mini_snake[1].snake, is_snake[1][0], is_snake[1][1], is_snake, sizeof_snake);
+			meocon.LIVE=move_(moving, meocon.mini_snake[1].snake, is_snake[1][0], is_snake[1][1], is_snake, sizeof_snake);
 			
 	
+			if (meocon.LIVE == FALSE)
+			{
+				break;
+			}
+
 			gotoxy(WIDTH_CONSOLE * 2 + 3, 1+HEIGH_CONSOLE / 2); //HIỆN TỌA ĐỒ MỒI
 			cout << "TOA DO EAT (x,y): " << "(" << EAT.x << "," << EAT.y << ")";
 			for (int i = 1; i < sizeof_snake; i++)
